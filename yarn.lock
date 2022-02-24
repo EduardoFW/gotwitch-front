@@ -8541,9 +8541,9 @@ vuetify-loader@^2.0.0-alpha.0:
     upath "^2.0.1"
 
 vuetify@^3.0.0-alpha.0:
-  version "3.0.0-alpha.12"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.0.0-alpha.12.tgz#c781ebf16a9bb89dd8dfd27c1848efd534545336"
-  integrity sha512-F9TwV3Xk6J/bSH422kATrKeIiumGRkzGJPsvM0/8vPwYF0HWh7dHRhhYsIKkfhl5UJl/LYdeGNm1L8+jtldA0w==
+  version "3.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-3.0.0-alpha.13.tgz#de858dc7a8e4931cc9e7baa201d2381487d48fd8"
+  integrity sha512-XP5taFr6vRFn01d8yPR9FDu1U8KvWisTJB9mK3cAYpe0yQwWvSwqUoD8tVpu2ptZ/KTgcjEY086FtYomGclYQA==
 
 watchpack-chokidar2@^2.0.1:
   version "2.0.1"
