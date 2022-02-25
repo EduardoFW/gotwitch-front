@@ -32,6 +32,17 @@ export default defineComponent({
       default: true
     }
   },
+  watch: {
+    channel: {
+      immediate: true,
+      handler(channel: string) {
+        // Check if the player is already loaded
+        if (player) {
+          player.setChannel(channel);
+        }
+      }
+    }
+  },
   beforeCreate() {
     loadScript("https://player.twitch.tv/js/embed/v1.js")
       .then(() => {
@@ -51,7 +62,6 @@ export default defineComponent({
         player.addEventListener("ready", () => {
           // player.setQuality(this.quality);
           // player.setVolume(this.volume);
-          player.setLayout(this.layout);
           this.$emit("ready");
         });
       })
