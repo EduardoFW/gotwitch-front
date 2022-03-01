@@ -1,0 +1,24 @@
+name: VueJS Front end
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    needs: [ test ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.18.1
+    
+    - name: Install dependencies
+      run: npm install
+    - name: Build
+      run: npm run build
+
+    - name: Deploy (copy files for self-hosted nginx)
+      run: cp -r dist/* /var/www/gotwitch/html/    
