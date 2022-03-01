@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    steps:
     - name: Setup node
       uses: actions/setup-node@v1
       with:
@@ -22,7 +23,7 @@ jobs:
         name: dist
         path: dist
         description: The built dist files
-        
+
   deploy:
     runs-on: self-hosted
     needs: [ build ]
