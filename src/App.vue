@@ -27,7 +27,7 @@ export default defineComponent({
     AppBar,
     Loading,
   },
-  mounted() {
+  created() {
     this.randomizeChannel();
   },
   data() {
