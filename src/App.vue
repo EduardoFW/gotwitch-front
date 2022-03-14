@@ -8,6 +8,7 @@
           <Twitch v-if="channel" :channel="channel" />
         </v-layout>
       </v-main>
+      <Footer />
     </v-app>
   </v-layout>
 </template>
@@ -18,6 +19,7 @@ import { getRandomStream } from "./services/api";
 import Twitch from "./components/Twitch.vue";
 import AppBar from "./components/AppBar.vue";
 import Loading from "./components/Loading.vue";
+import Footer from "./components/Footer.vue";
 
 export default defineComponent({
   name: "App",
@@ -26,6 +28,7 @@ export default defineComponent({
     Twitch,
     AppBar,
     Loading,
+    Footer
   },
   created() {
     this.randomizeChannel();
