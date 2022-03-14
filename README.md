@@ -11,6 +11,8 @@ List of cool things to add:
     * [ ] Language
     * [ ] Game
     * [ ] Viewers
+* [ ] Add themes
+* [ ] Add easter eggs
 
 ## Project setup
 ```
