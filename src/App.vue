@@ -4,8 +4,8 @@
       <AppBar :onGoButtonClick="randomizeChannel" />
       <v-main>
         <v-layout full-height>
+          <Loading v-if="loading" />
           <Twitch v-if="channel" :channel="channel" />
-          <Loading v-else-if="loading" />
         </v-layout>
       </v-main>
     </v-app>
