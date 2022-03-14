@@ -5,6 +5,7 @@
       <v-main>
         <v-layout full-height>
           <Twitch v-if="channel" :channel="channel" />
+          <Loading v-else-if="loading" />
         </v-layout>
       </v-main>
     </v-app>
@@ -13,9 +14,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getRandomStream } from './services/api';
+import { getRandomStream } from "./services/api";
 import Twitch from "./components/Twitch.vue";
 import AppBar from "./components/AppBar.vue";
+import Loading from "./components/Loading.vue";
 
 export default defineComponent({
   name: "App",
@@ -23,6 +25,7 @@ export default defineComponent({
   components: {
     Twitch,
     AppBar,
+    Loading,
   },
   mounted() {
     this.randomizeChannel();
@@ -30,16 +33,18 @@ export default defineComponent({
   data() {
     return {
       channel: "",
+      loading: false,
     };
   },
   methods: {
     randomizeChannel() {
-      console.log('Running randomizeChannel');
+      this.loading = true;
       getRandomStream()
         .then((stream) => {
           this.channel = stream.data.user_login;
         })
-        .catch((e) => console.error(e));
+        .catch((e) => console.error(e))
+        .finally(() => (this.loading = false));
     },
   },
 });
