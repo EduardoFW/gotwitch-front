@@ -11,7 +11,7 @@
 
       <span>GO!</span>
     </v-btn>
-    <v-btn class="ml-0 mr-4 px-2"  color="primary" rounded="0" variant="outlined" min-width="0">
+    <v-btn @click="onFilterButtonClick" class="ml-0 mr-4 px-2"  color="primary" rounded="0" variant="outlined" min-width="0">
       <v-icon icon="mdi-filter"></v-icon>
     </v-btn>
   </v-app-bar>
@@ -24,6 +24,10 @@ export default defineComponent({
   name: "AppBar",
   props: {
     onGoButtonClick: {
+      type: Function,
+      default: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+    },
+    onFilterButtonClick: {
       type: Function,
       default: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
     },
