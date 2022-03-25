@@ -6,10 +6,13 @@
 
     <v-divider inset vertical></v-divider>
 
-    <v-btn @click="onGoButtonClick" class="mr-4 ml-5" color="primary" plain>
+    <v-btn @click="onGoButtonClick" class="ml-5 mr-0" color="primary" rounded="0">
       <v-icon left icon="mdi-cached"></v-icon>
 
       <span>GO!</span>
+    </v-btn>
+    <v-btn class="ml-0 mr-4 px-2"  color="primary" rounded="0" variant="outlined" min-width="0">
+      <v-icon icon="mdi-filter"></v-icon>
     </v-btn>
   </v-app-bar>
 </template>
