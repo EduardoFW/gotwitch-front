@@ -1,5 +1,10 @@
 <template>
   <v-card width="500px">
+    <v-card-title>
+      <v-card-title-text>
+        <span>Filters</span>
+      </v-card-title-text>
+    </v-card-title>
     <v-card-text>
       <v-row>
         <v-col>
