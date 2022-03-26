@@ -1,7 +1,12 @@
 <template>
   <v-layout full-height>
+    <v-dialog
+      v-model="filterModal"
+    >
+      <FilterDialog :onCloseClick="() => filterModal = false" :onApplyFilterClick="applyFilter"/>
+    </v-dialog>
     <v-app full-height>
-      <AppBar :onGoButtonClick="randomizeChannel" />
+      <AppBar :onGoButtonClick="randomizeChannel" :onFilterButtonClick="() => filterModal = true" />
       <v-main>
         <v-layout full-height>
           <Loading v-if="loading" />
@@ -20,6 +25,7 @@ import Twitch from "./components/Twitch.vue";
 import AppBar from "./components/AppBar.vue";
 import Loading from "./components/Loading.vue";
 import Footer from "./components/Footer.vue";
+import FilterDialog from "./components/FilterDialog.vue";
 
 export default defineComponent({
   name: "App",
@@ -28,7 +34,8 @@ export default defineComponent({
     Twitch,
     AppBar,
     Loading,
-    Footer
+    Footer,
+    FilterDialog,
   },
   created() {
     this.randomizeChannel();
@@ -37,10 +44,15 @@ export default defineComponent({
     return {
       channel: "",
       loading: false,
+      filterModal: false,
     };
   },
   methods: {
-    randomizeChannel() {
+    applyFilter(params: any) {
+      this.randomizeChannel(params);
+      this.filterModal = false;
+    },
+    randomizeChannel(params?: any) {
       this.loading = true;
       getRandomStream()
         .then((stream) => {
