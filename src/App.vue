@@ -2,8 +2,9 @@
   <v-layout full-height>
     <v-dialog
       v-model="filterModal"
+      :width="800"
     >
-      <FilterDialog :onCloseClick="() => filterModal = false" :onApplyFilterClick="applyFilter"/>
+      <FilterDialog @onCloseClick="() => filterModal = false" @onApplyFilterClick="applyFilter"/>
     </v-dialog>
     <v-app full-height>
       <AppBar :onGoButtonClick="randomizeChannel" :onFilterButtonClick="() => filterModal = true" />

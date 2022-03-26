@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card width="500px">
     <v-card-text>
       <v-row>
         <v-col>
@@ -16,9 +16,9 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="error" @click="onCloseClick">Cancel</v-btn>
+      <v-btn color="error" @click="$emit('onCloseClick')">Cancel</v-btn>
       <v-spacer />
-      <v-btn color="primary" @click="_onApplyFilterClick">Apply</v-btn>
+      <v-btn color="primary" @click="onApplyFilterClick">Apply</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -38,28 +38,31 @@ export interface IFilterReturn {
 export default defineComponent({
   name: "FilterDialog",
   components: {},
+  emits: ["onCloseClick", "onApplyFilterClick"],
   data() {
     return {
       filter: {
-        languages: []
+        languages: [],
       },
-      languages: require('../mock/languages.json'),
+      languages: require("../mock/languages.json"),
     };
   },
   computed: {
-    languageNames: function() {
+    languageNames: function () {
       return this.languages.map((language: ILanguageType) => language.name);
     },
   },
   methods: {
-    getLanguageCodes: function(languageNames: string[]): string[] {
-      return this.languages.filter((language: ILanguageType) =>
-        languageNames.includes(language.name)
-      ).map((language: ILanguageType) => language.code);
+    getLanguageCodes: function (languageNames: string[]): string[] {
+      return this.languages
+        .filter((language: ILanguageType) =>
+          languageNames.includes(language.name)
+        )
+        .map((language: ILanguageType) => language.code);
     },
-    _onApplyFilterClick: function() {
+    onApplyFilterClick: function () {
       const filter: IFilterReturn = {
-        languages: []
+        languages: [],
       };
 
       // Get language codes
@@ -68,18 +71,9 @@ export default defineComponent({
       // Set filter
       filter.languages = languageCodes;
 
-      this.onApplyFilterClick(filter);
+      this.$emit("onApplyFilterClick", filter);
     },
   },
-  props: {
-    onCloseClick: {
-      type: Function,
-      default: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-    },
-    onApplyFilterClick: {
-      type: Function,
-      default: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-    },
-  },
+  props: {},
 });
 </script>
