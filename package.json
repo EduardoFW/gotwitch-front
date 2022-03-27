@@ -6,7 +6,15 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:prod": "env-cmd -f ./.env.prod npm run build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postbuild": "react-snap"
+  },
+  "reactSnap": {
+    "source": "dist",
+    "minifyHtml": {
+      "collapseWhitespace": false,
+      "removeComments": false
+    }
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
@@ -32,6 +40,7 @@
     "env-cmd": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
+    "react-snap": "^1.23.0",
     "sass": "^1.38.0",
     "sass-loader": "^10.0.0",
     "typescript": "~4.1.5",

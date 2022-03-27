@@ -1,6 +1,6 @@
 <template>
   <v-app-bar density="compact" absolute>
-    <v-app-bar-title>GoTwitch</v-app-bar-title>
+    <v-app-bar-title><h1>GoTwitch</h1></v-app-bar-title>
 
     <v-spacer></v-spacer>
 
