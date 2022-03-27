@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Chrome
-      uses: browser-actions/setup-chrome@latest
     - name: Setup node
       uses: actions/setup-node@v1
       with:
