@@ -2,7 +2,6 @@
   <v-layout full-height>
     <v-dialog
       v-model="filterModal"
-      :width="800"
     >
       <FilterDialog @onCloseClick="() => filterModal = false" @onApplyFilterClick="applyFilter"/>
     </v-dialog>
