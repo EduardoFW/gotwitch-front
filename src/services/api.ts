@@ -33,3 +33,13 @@ export const getRandomStream = async (params?: getRandomStreamParams): Promise<s
     const response = await axiosClient.get("/random-stream", { params })
     return response.data
 }
+
+export interface Category {
+  id: string
+  name: string
+  box_art_url: string
+}
+export const searchCategory = async (category: string): Promise<Category[]> => {
+  const response = await axiosClient.get("/search-category", { params: { query: category } })
+  return response.data
+}

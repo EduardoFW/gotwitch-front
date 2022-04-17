@@ -15,6 +15,16 @@
             label="Languages"
             multiple
           ></v-autocomplete>
+          <v-autocomplete
+            v-model="selectedCategory"
+            v-model:search-input="searchCategory"
+            :items="categoryNames"
+            outlined
+            chips
+            closable-chips
+            label="Categories"
+            multiple
+          ></v-autocomplete>
         </v-col>
       </v-row>
     </v-card-text>
@@ -27,7 +37,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from "vue";
+import { cloneDeep } from "lodash";
+import { defineComponent, inject, ref, watch } from "vue";
 import { FilterContextKey } from '../context/FilterContext';
 
 interface ILanguageType {
@@ -53,15 +64,23 @@ export default defineComponent({
     };
     const selectedLanguages = ref(getSelectedLanguagesFromCode(filter.language));
 
+    const selectedCategory = ref();
+    const searchCategory = ref();
+
     return {
       filter,
-      selectedLanguages,
       languages,
+      selectedLanguages,
+      selectedCategory,
+      searchCategory
     }
   },
   computed: {
     languageNames: function () {
       return this.languages.map((language: ILanguageType) => language.name);
+    },
+    categoryNames: function () {
+      return []
     },
   },
   mounted() {
