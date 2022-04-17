@@ -7,7 +7,7 @@
       <v-row>
         <v-col>
           <v-autocomplete
-            v-model="filter.languages"
+            v-model="filter.language"
             :items="languageNames"
             outlined
             chips
@@ -37,7 +37,7 @@ interface ILanguageType {
 }
 
 export interface IFilterReturn {
-  languages: string[];
+  language: string[];
 }
 
 export default defineComponent({
@@ -77,7 +77,7 @@ export default defineComponent({
       };
 
       // Get language codes
-      const languageCodes = this.getLanguageCodes(this.filter.languages);
+      const languageCodes = this.getLanguageCodes(this.filter.language);
 
       // Set filter
       filter.language = languageCodes;

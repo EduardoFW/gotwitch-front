@@ -2,7 +2,7 @@ import { computed, InjectionKey, reactive, watch } from "vue";
 import cloneDeep from "lodash.clonedeep";
 
 type Filter = {
-  languages: string[];
+  language: string[];
 }
 
 type FilterKey = keyof Filter;
@@ -11,11 +11,11 @@ type FilterKey = keyof Filter;
 export const FilterContextKey = Symbol('FilterContext') as InjectionKey<any>;
 
 const filter = reactive<Filter>({
-  languages: JSON.parse(localStorage.getItem('languages') || '[]') as string[],
+  language: JSON.parse(localStorage.getItem('language') || '[]') as string[],
 });
 
-watch(() => cloneDeep(filter.languages), () => {
-  localStorage.setItem('languages', JSON.stringify(filter.languages));
+watch(() => cloneDeep(filter.language), () => {
+  localStorage.setItem('language', JSON.stringify(filter.language));
 });
 
 const filterCount = computed(() => {
