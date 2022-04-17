@@ -27,6 +27,7 @@
 </template>
 
 <script lang="ts">
+import { getRandomStreamParams } from "@/services/api";
 import { defineComponent, inject } from "vue";
 import { FilterContextKey } from '../context/FilterContext';
 
@@ -51,9 +52,6 @@ export default defineComponent({
   },
   data() {
     return {
-      // filter: {
-      //   languages: [],
-      // },
       languages: require("../mock/languages.json"),
     };
   },
@@ -74,15 +72,15 @@ export default defineComponent({
         .map((language: ILanguageType) => language.code);
     },
     onApplyFilterClick: function () {
-      const filter: IFilterReturn = {
-        languages: [],
+      const filter: getRandomStreamParams = {
+        language: [],
       };
 
       // Get language codes
       const languageCodes = this.getLanguageCodes(this.filter.languages);
 
       // Set filter
-      filter.languages = languageCodes;
+      filter.language = languageCodes;
 
       this.$emit("onApplyFilterClick", filter);
     },

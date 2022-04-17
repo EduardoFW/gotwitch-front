@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide } from "vue";
-import { getRandomStream } from "./services/api";
+import { defineComponent, provide } from "vue";
+import { getRandomStream, getRandomStreamParams } from "./services/api";
 import Twitch from "./components/Twitch.vue";
 import AppBar from "./components/AppBar.vue";
 import Loading from "./components/Loading.vue";
@@ -41,13 +41,8 @@ export default defineComponent({
   setup () {
     provide(FilterContextKey, FilterContext);
 
-    const filterCount = computed(() => {
-      const { filter } = FilterContext;
-      return filter.languages.length;
-    });
-
     return {
-      filterCount
+      ...FilterContext,
     }
   },
   created() {
@@ -61,12 +56,12 @@ export default defineComponent({
     };
   },
   methods: {
-    applyFilter(params: any) {
+    applyFilter(params: getRandomStreamParams) {
       console.log(params);
       this.randomizeChannel(params);
       this.filterModal = false;
     },
-    randomizeChannel(params?: any) {
+    randomizeChannel(params?: getRandomStreamParams) {
       this.loading = true;
       getRandomStream(params)
         .then((stream) => {

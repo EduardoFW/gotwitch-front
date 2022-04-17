@@ -26,7 +26,10 @@ interface streamResponse {
         is_mature: boolean
     }
 }
-export const getRandomStream = async (params?: any): Promise<streamResponse> => {
+export interface getRandomStreamParams {
+  language?: string[]
+}
+export const getRandomStream = async (params?: getRandomStreamParams): Promise<streamResponse> => {
     const response = await axiosClient.get("/random-stream", { params })
     return response.data
 }
