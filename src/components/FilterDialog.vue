@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import { getRandomStreamParams } from "@/services/api";
 import { defineComponent, inject, ref } from "vue";
 import { FilterContextKey } from '../context/FilterContext';
 
