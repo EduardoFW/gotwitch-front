@@ -7,7 +7,7 @@
       <v-row>
         <v-col>
           <v-autocomplete
-            v-model="filter.language"
+            v-model="selectedLanguages"
             :items="languageNames"
             outlined
             chips
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { getRandomStreamParams } from "@/services/api";
-import { defineComponent, inject } from "vue";
+import { defineComponent, inject, ref } from "vue";
 import { FilterContextKey } from '../context/FilterContext';
 
 interface ILanguageType {
@@ -46,14 +46,19 @@ export default defineComponent({
   emits: ["onCloseClick", "onApplyFilterClick"],
   setup() {
     const { filter } = inject(FilterContextKey);
-    return {
-      filter
-    }
-  },
-  data() {
-    return {
-      languages: require("../mock/languages.json"),
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const languages = require("../mock/languages.json") as ILanguageType[];
+
+    const getSelectedLanguagesFromCode = (languagesCodes: string[]) => {
+      return languages.filter((language) => languagesCodes.includes(language.code)).map((language) => language.name);
     };
+    const selectedLanguages = ref(getSelectedLanguagesFromCode(filter.language));
+
+    return {
+      filter,
+      selectedLanguages,
+      languages,
+    }
   },
   computed: {
     languageNames: function () {
@@ -72,17 +77,13 @@ export default defineComponent({
         .map((language: ILanguageType) => language.code);
     },
     onApplyFilterClick: function () {
-      const filter: getRandomStreamParams = {
-        language: [],
-      };
-
       // Get language codes
-      const languageCodes = this.getLanguageCodes(this.filter.language);
+      const languageCodes = this.getLanguageCodes(this.selectedLanguages);
 
       // Set filter
-      filter.language = languageCodes;
+      this.filter.language = languageCodes;
 
-      this.$emit("onApplyFilterClick", filter);
+      this.$emit("onApplyFilterClick", this.filter);
     },
   },
   props: {},
