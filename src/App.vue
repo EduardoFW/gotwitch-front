@@ -19,13 +19,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, provide } from "vue";
 import { getRandomStream } from "./services/api";
 import Twitch from "./components/Twitch.vue";
 import AppBar from "./components/AppBar.vue";
 import Loading from "./components/Loading.vue";
 import Footer from "./components/Footer.vue";
 import FilterDialog from "./components/FilterDialog.vue";
+import FilterContext, { FilterContextKey } from "./context/FilterContext";
 
 export default defineComponent({
   name: "App",
@@ -35,7 +36,19 @@ export default defineComponent({
     AppBar,
     Loading,
     Footer,
-    FilterDialog,
+    FilterDialog
+  },
+  setup () {
+    provide(FilterContextKey, FilterContext);
+
+    const filterCount = computed(() => {
+      const { filter } = FilterContext;
+      return filter.languages.length;
+    });
+
+    return {
+      filterCount
+    }
   },
   created() {
     this.randomizeChannel();

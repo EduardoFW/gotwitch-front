@@ -27,7 +27,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
+import { FilterContextKey } from '../context/FilterContext';
 
 interface ILanguageType {
   code: string;
@@ -42,11 +43,17 @@ export default defineComponent({
   name: "FilterDialog",
   components: {},
   emits: ["onCloseClick", "onApplyFilterClick"],
+  setup() {
+    const { filter } = inject(FilterContextKey);
+    return {
+      filter
+    }
+  },
   data() {
     return {
-      filter: {
-        languages: [],
-      },
+      // filter: {
+      //   languages: [],
+      // },
       languages: require("../mock/languages.json"),
     };
   },
@@ -54,6 +61,9 @@ export default defineComponent({
     languageNames: function () {
       return this.languages.map((language: ILanguageType) => language.name);
     },
+  },
+  mounted() {
+    console.log(this.filter);
   },
   methods: {
     getLanguageCodes: function (languageNames: string[]): string[] {
