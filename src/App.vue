@@ -58,12 +58,12 @@ export default defineComponent({
   methods: {
     applyFilter(params: getRandomStreamParams) {
       console.log(params);
-      this.randomizeChannel(params);
+      this.randomizeChannel();
       this.filterModal = false;
     },
-    randomizeChannel(params?: getRandomStreamParams) {
+    randomizeChannel() {
       this.loading = true;
-      getRandomStream(params)
+      getRandomStream(this.filter)
         .then((stream) => {
           this.channel = stream.data.user_login;
         })
