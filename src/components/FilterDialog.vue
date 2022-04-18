@@ -17,6 +17,18 @@
             item-text="name"
             item-value="code"
           />
+          <Autocomplete
+            v-model="selectedCategory"
+            v-model:search="searchCategory"
+            outlined
+            chips
+            closable-chips
+            label="Categories"
+            multiple
+            :items="allCategories"
+            item-text="name"
+            item-value="id"
+          />
           <!-- <Autocomplete
             v-model="selectedCat"
             v-model:search="searchCat"
@@ -26,7 +38,7 @@
             multiple
             item-value="code"
           /> -->
-          <v-autocomplete
+          <!-- <v-autocomplete
             v-model="selectedCategory"
             v-model:search="searchCategory"
             :items="categoryNames"
@@ -36,7 +48,7 @@
             no-filter
             label="Categories"
             multiple
-          ></v-autocomplete>
+          ></v-autocomplete> -->
         </v-col>
       </v-row>
     </v-card-text>
@@ -52,7 +64,7 @@
 import { Category, searchCategory, SearchCategoryReturn } from "@/services/api";
 import { cloneDeep } from "lodash";
 import { defineComponent, inject, ref, watch } from "vue";
-import { FilterContextKey, FilterLanguage } from "../context/FilterContext";
+import { FilterContextKey, FilterGame, FilterLanguage } from "../context/FilterContext";
 import Autocomplete from "./Autocomplete.vue";
 
 interface ILanguageType {
@@ -74,24 +86,12 @@ export default defineComponent({
     const { filter } = inject(FilterContextKey);
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const languages = require("../mock/languages.json") as ILanguageType[];
-    const selectedLanguages = ref(filter.language.map((l: FilterLanguage) => l.code));
+    const selectedLanguages = ref(filter.language);
 
-    const selectedCategory = ref<string[]>([]);
-    const selectedCategoryId = ref<string[]>([]);
+    const selectedCategory = ref<FilterGame[]>(filter.gameId);
     const categories = ref<Category[]>([]);
     const searchCategory = ref();
 
-    const selectedCat = ref<string[]>(["ak"]);
-    const searchCat = ref();
-
-    watch(
-      () => cloneDeep(selectedCategory.value),
-      (newValue) => {
-        selectedCategoryId.value = categories.value
-          .filter((category) => newValue.includes(category.name))
-          .map((category) => category.id);
-      }
-    );
 
     return {
       filter,
@@ -99,18 +99,12 @@ export default defineComponent({
       categories,
       selectedLanguages,
       selectedCategory,
-      selectedCategoryId,
       searchCategory,
-      selectedCat,
-      searchCat,
     };
   },
   computed: {
-    categoryNames: function () {
-      const allCategories = this.selectedCategory.concat(
-        this.categories.map((category) => category.name)
-      );
-      return [...new Set(allCategories)];
+    allCategories: function () {
+      return this.selectedCategory.concat(this.categories);
     },
   },
   mounted() {
@@ -132,7 +126,7 @@ export default defineComponent({
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.selectedLanguages;
-      const categoryCodes = this.selectedCategoryId;
+      const categoryCodes = this.selectedCategory;
 
       // Set filter
       this.filter.language = languageCodes;

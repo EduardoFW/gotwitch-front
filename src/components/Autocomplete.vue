@@ -70,8 +70,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const getNameFromValue = (value: string) => {
-      const item: any = props.items.find((item: any) => item[props.itemValue] === value);
+    const getNameFromObject = (object: any) => {
+      const item: any = props.items.find((item: any) => item[props.itemValue] === object[props.itemValue]);
       return item ? item[props.itemText] : "";
     };
 
@@ -80,7 +80,7 @@ export default defineComponent({
       return item;
     };
 
-    const selected = ref<string[]>((props.modelValue as string[]).map((value) => getNameFromValue(value)));
+    const selected = ref<string[]>((props.modelValue as string[]).map((value) => getNameFromObject(value)));
     const localSearch = ref<string>("");
 
     const itemTexts = computed(() =>
