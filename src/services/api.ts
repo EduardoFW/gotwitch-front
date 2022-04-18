@@ -8,30 +8,45 @@ const axiosClient = axios.create({
   },
 })
 
-interface streamResponse {
-    data: {
-        id: string
-        user_id: string
-        user_login: string
-        user_name: string
-        game_id: string
-        game_name: string
-        type: string
-        title: string
-        viewer_count: number
-        started_at: Date
-        language: string
-        thumbnail_url: string,
-        tag_ids: string[]
-        is_mature: boolean
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const convertToSnakeCase = (obj: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const newObj: any = {}
+  for (const key in obj) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (obj.hasOwnProperty(key)) {
+      const newKey = key.replace(/([A-Z])/g, "_$1").toLowerCase()
+      newObj[newKey] = obj[key]
     }
+  }
+  return newObj
+}
+
+interface streamResponse {
+  data: {
+    id: string
+    user_id: string
+    user_login: string
+    user_name: string
+    game_id: string
+    game_name: string
+    type: string
+    title: string
+    viewer_count: number
+    started_at: Date
+    language: string
+    thumbnail_url: string,
+    tag_ids: string[]
+    is_mature: boolean
+  }
 }
 export interface getRandomStreamParams {
   language?: string[]
+  gameId?: string[]
 }
 export const getRandomStream = async (params?: getRandomStreamParams): Promise<streamResponse> => {
-    const response = await axiosClient.get("/random-stream", { params })
-    return response.data
+  const response = await axiosClient.get("/random-stream", { params: convertToSnakeCase(params) })
+  return response.data
 }
 
 export interface Category {

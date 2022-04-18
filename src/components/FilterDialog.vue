@@ -75,11 +75,14 @@ export default defineComponent({
     const categories = ref<Category[]>([]);
     const searchCategory = ref();
 
-    watch(() => cloneDeep(selectedCategory.value), (newValue) => {
-      selectedCategoryId.value = categories.value.filter(
-        (category) => newValue.includes(category.name)
-      ).map((category) => category.id);
-    });
+    watch(
+      () => cloneDeep(selectedCategory.value),
+      (newValue) => {
+        selectedCategoryId.value = categories.value
+          .filter((category) => newValue.includes(category.name))
+          .map((category) => category.id);
+      }
+    );
 
     return {
       filter,
@@ -96,7 +99,9 @@ export default defineComponent({
       return this.languages.map((language: ILanguageType) => language.name);
     },
     categoryNames: function () {
-      const allCategories = this.selectedCategory.concat(this.categories.map((category) => category.name));
+      const allCategories = this.selectedCategory.concat(
+        this.categories.map((category) => category.name)
+      );
       return [...new Set(allCategories)];
     },
   },
@@ -124,9 +129,9 @@ export default defineComponent({
       // Get language codes
       const languageCodes = this.getLanguageCodes(this.selectedLanguages);
       const categoryCodes = this.selectedCategoryId;
-      console.log(categoryCodes);
       // Set filter
       this.filter.language = languageCodes;
+      this.filter.gameId = categoryCodes;
 
       this.$emit("onApplyFilterClick", this.filter);
     },
