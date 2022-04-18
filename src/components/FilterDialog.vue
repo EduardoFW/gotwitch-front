@@ -15,6 +15,26 @@
             label="Languages"
             multiple
           ></v-autocomplete>
+          <!-- <Autocomplete
+            v-model="selectedLanguages"
+            outlined
+            chips
+            closable-chips
+            label="Languages"
+            multiple
+            :items="languages"
+            item-text="name"
+            item-value="code"
+          /> -->
+          <!-- <Autocomplete
+            v-model="selectedCat"
+            v-model:search="searchCat"
+            label="Categories 2"
+            :items="languages"
+            item-text="name"
+            multiple
+            item-value="code"
+          /> -->
           <v-autocomplete
             v-model="selectedCategory"
             v-model:search="searchCategory"
@@ -42,6 +62,7 @@ import { Category, searchCategory, SearchCategoryReturn } from "@/services/api";
 import { cloneDeep } from "lodash";
 import { defineComponent, inject, ref, watch } from "vue";
 import { FilterContextKey } from "../context/FilterContext";
+import Autocomplete from "./Autocomplete.vue";
 
 interface ILanguageType {
   code: string;
@@ -54,7 +75,9 @@ export interface IFilterReturn {
 
 export default defineComponent({
   name: "FilterDialog",
-  components: {},
+  components: {
+    Autocomplete,
+  },
   emits: ["onCloseClick", "onApplyFilterClick"],
   setup() {
     const { filter } = inject(FilterContextKey);
@@ -75,6 +98,9 @@ export default defineComponent({
     const categories = ref<Category[]>([]);
     const searchCategory = ref();
 
+    const selectedCat = ref<string[]>(["ak"]);
+    const searchCat = ref();
+
     watch(
       () => cloneDeep(selectedCategory.value),
       (newValue) => {
@@ -92,6 +118,8 @@ export default defineComponent({
       selectedCategory,
       selectedCategoryId,
       searchCategory,
+      selectedCat,
+      searchCat,
     };
   },
   computed: {
@@ -118,6 +146,9 @@ export default defineComponent({
     },
   },
   methods: {
+    onInput: function (value: string[]) {
+      console.log(value);
+    },
     getLanguageCodes: function (languageNames: string[]): string[] {
       return this.languages
         .filter((language: ILanguageType) =>
