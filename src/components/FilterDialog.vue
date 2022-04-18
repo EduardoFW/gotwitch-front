@@ -123,7 +123,6 @@ export default defineComponent({
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.getLanguageCodes(this.selectedLanguages);
-      console.log("selectedCategory", this.selectedCategory);
       const categoryCodes = this.selectedCategoryId;
       console.log(categoryCodes);
       // Set filter
