@@ -56,6 +56,17 @@ export default defineComponent({
     };
   },
   methods: {
+    getFiltersParams() {
+      const {
+        language,
+        gameId,
+      } = this.filter;
+
+      return {
+        language: language.map((l) => l.code),
+        category: gameId.map((c) => c.id),
+      };
+    },
     applyFilter(params: getRandomStreamParams) {
       console.log(params);
       this.randomizeChannel();
@@ -63,7 +74,7 @@ export default defineComponent({
     },
     randomizeChannel() {
       this.loading = true;
-      getRandomStream(this.filter)
+      getRandomStream(this.getFiltersParams())
         .then((stream) => {
           this.channel = stream.data.user_login;
         })

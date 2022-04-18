@@ -75,9 +75,9 @@ export default defineComponent({
       return item ? item[props.itemText] : "";
     };
 
-    const getValueFromName = (name: string) => {
+    const getItemFromName = (name: string) => {
       const item: any = props.items.find((item: any) => item[props.itemText] === name);
-      return item ? item[props.itemValue] : "";
+      return item;
     };
 
     const selected = ref<string[]>((props.modelValue as string[]).map((value) => getNameFromValue(value)));
@@ -90,7 +90,7 @@ export default defineComponent({
     watch(
       () => cloneDeep(selected.value),
       () => {
-        const values = selected.value.map((name: string) => getValueFromName(name));
+        const values = selected.value.map((name: string) => getItemFromName(name));
         emit("update:modelValue", values);
       },
     );

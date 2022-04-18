@@ -1,9 +1,19 @@
 import { computed, InjectionKey, reactive, watch } from "vue";
 import cloneDeep from "lodash.clonedeep";
 
-type Filter = {
-  language: string[];
-  gameId: string[];
+export type FilterLanguage = {
+  name: string;
+  code: string;
+}
+
+export type FilterGame = {
+  name: string;
+  id: string;
+}
+
+export type Filter = {
+  language: FilterLanguage[];
+  gameId: FilterGame[];
 }
 
 type FilterKey = keyof Filter;
@@ -12,8 +22,8 @@ type FilterKey = keyof Filter;
 export const FilterContextKey = Symbol('FilterContext') as InjectionKey<any>;
 
 const filter = reactive<Filter>({
-  language: JSON.parse(localStorage.getItem('language') || '[]') as string[],
-  gameId: JSON.parse(localStorage.getItem('gameId') || '[]') as string[],
+  language: JSON.parse(localStorage.getItem('language') || '[]') as FilterLanguage[],
+  gameId: JSON.parse(localStorage.getItem('gameId') || '[]') as FilterGame[],
 });
 
 watch(() => cloneDeep(filter.language), () => {

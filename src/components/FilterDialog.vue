@@ -6,16 +6,7 @@
     <v-card-text>
       <v-row>
         <v-col>
-          <v-autocomplete
-            v-model="selectedLanguages"
-            :items="languageNames"
-            outlined
-            chips
-            closable-chips
-            label="Languages"
-            multiple
-          ></v-autocomplete>
-          <!-- <Autocomplete
+          <Autocomplete
             v-model="selectedLanguages"
             outlined
             chips
@@ -25,7 +16,7 @@
             :items="languages"
             item-text="name"
             item-value="code"
-          /> -->
+          />
           <!-- <Autocomplete
             v-model="selectedCat"
             v-model:search="searchCat"
@@ -61,7 +52,7 @@
 import { Category, searchCategory, SearchCategoryReturn } from "@/services/api";
 import { cloneDeep } from "lodash";
 import { defineComponent, inject, ref, watch } from "vue";
-import { FilterContextKey } from "../context/FilterContext";
+import { FilterContextKey, FilterLanguage } from "../context/FilterContext";
 import Autocomplete from "./Autocomplete.vue";
 
 interface ILanguageType {
@@ -83,15 +74,7 @@ export default defineComponent({
     const { filter } = inject(FilterContextKey);
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const languages = require("../mock/languages.json") as ILanguageType[];
-
-    const getSelectedLanguagesFromCode = (languagesCodes: string[]) => {
-      return languages
-        .filter((language) => languagesCodes.includes(language.code))
-        .map((language) => language.name);
-    };
-    const selectedLanguages = ref(
-      getSelectedLanguagesFromCode(filter.language)
-    );
+    const selectedLanguages = ref(filter.language.map((l: FilterLanguage) => l.code));
 
     const selectedCategory = ref<string[]>([]);
     const selectedCategoryId = ref<string[]>([]);
@@ -123,9 +106,6 @@ export default defineComponent({
     };
   },
   computed: {
-    languageNames: function () {
-      return this.languages.map((language: ILanguageType) => language.name);
-    },
     categoryNames: function () {
       const allCategories = this.selectedCategory.concat(
         this.categories.map((category) => category.name)
@@ -149,17 +129,11 @@ export default defineComponent({
     onInput: function (value: string[]) {
       console.log(value);
     },
-    getLanguageCodes: function (languageNames: string[]): string[] {
-      return this.languages
-        .filter((language: ILanguageType) =>
-          languageNames.includes(language.name)
-        )
-        .map((language: ILanguageType) => language.code);
-    },
     onApplyFilterClick: function () {
       // Get language codes
-      const languageCodes = this.getLanguageCodes(this.selectedLanguages);
+      const languageCodes = this.selectedLanguages;
       const categoryCodes = this.selectedCategoryId;
+
       // Set filter
       this.filter.language = languageCodes;
       this.filter.gameId = categoryCodes;
