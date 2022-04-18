@@ -64,7 +64,7 @@ export default defineComponent({
 
       return {
         language: language.map((l) => l.code),
-        category: gameId.map((c) => c.id),
+        gameId: gameId.map((c) => c.id),
       };
     },
     applyFilter(params: getRandomStreamParams) {
