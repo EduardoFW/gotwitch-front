@@ -62,9 +62,8 @@
 
 <script lang="ts">
 import { Category, searchCategory, SearchCategoryReturn } from "@/services/api";
-import { cloneDeep } from "lodash";
-import { defineComponent, inject, ref, watch } from "vue";
-import { FilterContextKey, FilterGame, FilterLanguage } from "../context/FilterContext";
+import { defineComponent, inject, ref } from "vue";
+import { FilterContextKey, FilterGame } from "../context/FilterContext";
 import Autocomplete from "./Autocomplete.vue";
 
 interface ILanguageType {

@@ -17,7 +17,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed, defineComponent, ref, watch } from "@vue/runtime-core";
 import { cloneDeep } from "lodash";
-import { VAutocomplete } from "vuetify/lib/components";
 
 export default defineComponent({
   name: "Autocomplete",
