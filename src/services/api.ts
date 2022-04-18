@@ -39,7 +39,10 @@ export interface Category {
   name: string
   box_art_url: string
 }
-export const searchCategory = async (category: string): Promise<Category[]> => {
+export interface SearchCategoryReturn {
+  data: Category[],
+}
+export const searchCategory = async (category: string): Promise<SearchCategoryReturn> => {
   const response = await axiosClient.get("/search-category", { params: { query: category } })
   return response.data
 }
