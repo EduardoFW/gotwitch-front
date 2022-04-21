@@ -6,10 +6,6 @@ import VueGtag from 'vue-gtag'
 
 loadFonts()
 
-// Delete h1 element from the DOM 
-const h1 = document.querySelector('h1')
-h1?.remove()
-
 createApp(App)
   .use(vuetify)
   .use(VueGtag, {
