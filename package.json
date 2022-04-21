@@ -10,6 +10,7 @@
     "postbuild": "react-snap"
   },
   "reactSnap": {
+    "puppeteerArgs": ["--no-sandbox", "--disable-setuid-sandbox"],
     "source": "dist",
     "minifyHtml": {
       "collapseWhitespace": false,
