@@ -9,6 +9,7 @@
       size="small"
       href="https://github.com/EduardoFW/gotwitch-front"
       target="_blank"
+      aria-label="GitHub"
     ></v-btn>
   </div>
 </template>

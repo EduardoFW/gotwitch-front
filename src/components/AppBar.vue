@@ -24,6 +24,7 @@
       rounded="0"
       variant="outlined"
       min-width="0"
+      aria-label="Filter"
     >
       <v-badge v-if="filterCount" :content="filterCount">
         <v-icon icon="mdi-filter"></v-icon>
