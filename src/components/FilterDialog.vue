@@ -106,8 +106,6 @@ export default defineComponent({
       return this.selectedCategory.concat(this.categories);
     },
   },
-  mounted() {
-  },
   watch: {
     searchCategory(val: string) {
       if (val.length > 2) {
@@ -118,8 +116,6 @@ export default defineComponent({
     },
   },
   methods: {
-    onInput: function (value: string[]) {
-    },
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.selectedLanguages;

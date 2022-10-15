@@ -1,11 +1,20 @@
-import axios from "axios"
+import { setup } from 'axios-cache-adapter'
 
-const axiosClient = axios.create({
+const axiosClient = setup({
   baseURL: process.env.VUE_APP_API_BASE_URL,
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
+  cache: {
+    maxAge: 15 * 60 * 1000,
+    exclude: {
+      query: false,
+      paths: [
+        /\/random-stream/,
+      ],
+    }
+  }
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +67,6 @@ export interface SearchCategoryReturn {
   categories: Category[],
 }
 export const searchCategory = async (category: string): Promise<SearchCategoryReturn> => {
-  const response = await axiosClient.get("/search-category", { params: { query: category } })
+  const response = await axiosClient.get("/search-category", { params: { query: category.toLocaleLowerCase() } })
   return response.data
 }
