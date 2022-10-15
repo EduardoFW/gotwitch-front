@@ -15,13 +15,13 @@ jobs:
         node-version: 14.18.1
     
     - name: Install dependencies
-      run: npm install
+      run: yarn
     - name: Build
-      run: npm run build:prod
+      run: yarn build:prod
     
     - name: Snap
       continue-on-error: true
-      run: npm run react-snap
+      run: yarn react-snap
     
     - name: Upload artifacts
       uses: actions/upload-artifact@v1
