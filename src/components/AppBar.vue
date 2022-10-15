@@ -11,7 +11,6 @@
       class="ml-5 mr-0"
       color="primary"
       rounded="0"
-      variant="contained"
     >
       <v-icon left icon="mdi-cached"></v-icon>
 
