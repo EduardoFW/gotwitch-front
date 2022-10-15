@@ -6,8 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:prod": "env-cmd -f ./.env.prod npm run build",
-    "lint": "vue-cli-service lint",
-    "postbuild": "react-snap"
+    "lint": "vue-cli-service lint"
   },
   "reactSnap": {
     "puppeteerArgs": [
