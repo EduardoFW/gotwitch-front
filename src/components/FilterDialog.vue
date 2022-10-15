@@ -13,13 +13,13 @@
             closable-chips
             label="Languages"
             multiple
-            :items="languages"
+            :items="allLanguages"
             item-text="name"
             item-value="code"
           />
           <Autocomplete
-            v-model="selectedCategory"
-            v-model:search="searchCategory"
+            v-model="selectedCategories"
+            v-model:search="searchCategoryInput"
             outlined
             chips
             closable-chips
@@ -29,26 +29,6 @@
             item-text="name"
             item-value="id"
           />
-          <!-- <Autocomplete
-            v-model="selectedCat"
-            v-model:search="searchCat"
-            label="Categories 2"
-            :items="languages"
-            item-text="name"
-            multiple
-            item-value="code"
-          /> -->
-          <!-- <v-autocomplete
-            v-model="selectedCategory"
-            v-model:search="searchCategory"
-            :items="categoryNames"
-            outlined
-            chips
-            closable-chips
-            no-filter
-            label="Categories"
-            multiple
-          ></v-autocomplete> -->
         </v-col>
       </v-row>
     </v-card-text>
@@ -87,9 +67,9 @@ export default defineComponent({
     const languages = require("../mock/languages.json") as ILanguageType[];
     const selectedLanguages = ref(filter.language);
 
-    const selectedCategory = ref<FilterGame[]>(filter.gameId);
+    const selectedCategories = ref<FilterGame[]>(filter.gameId);
     const categories = ref<Category[]>([]);
-    const searchCategory = ref();
+    const searchCategoryInput = ref();
 
 
     return {
@@ -97,29 +77,42 @@ export default defineComponent({
       languages,
       categories,
       selectedLanguages,
-      selectedCategory,
-      searchCategory,
+      selectedCategories,
+      searchCategoryInput,
     };
   },
   computed: {
     allCategories: function () {
-      return this.selectedCategory.concat(this.categories);
+      let categoriesLimited = this.categories.slice(0, 10);
+      return this.concatWithoutDuplicates(
+        this.selectedCategories,
+        categoriesLimited
+      );
+    },
+    allLanguages: function () {
+      let languagesLimited = this.languages.slice(0, 10);
+      return this.selectedLanguages.concat(languagesLimited);
     },
   },
   watch: {
-    searchCategory(val: string) {
-      if (val.length > 2) {
-        searchCategory(val).then((response: SearchCategoryReturn) => {
+    searchCategoryInput(searchInput: string) {
+      if (searchInput.length > 2) {
+        searchCategory(searchInput).then((response: SearchCategoryReturn) => {
           this.categories = response.categories;
         });
       }
     },
   },
   methods: {
+    concatWithoutDuplicates<T>(array1: T[], array2: T[]): T[] {
+      return array1.concat(
+        array2.filter((item) => array1.indexOf(item) < 0)
+      );
+    },
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.selectedLanguages;
-      const categoryCodes = this.selectedCategory;
+      const categoryCodes = this.selectedCategories;
 
       // Set filter
       this.filter.language = languageCodes;
