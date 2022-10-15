@@ -68,7 +68,6 @@ export default defineComponent({
       };
     },
     applyFilter(params: getRandomStreamParams) {
-      console.log(params);
       this.randomizeChannel();
       this.filterModal = false;
     },

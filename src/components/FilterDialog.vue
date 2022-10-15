@@ -107,7 +107,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    console.log(this.filter);
   },
   watch: {
     searchCategory(val: string) {
@@ -120,7 +119,6 @@ export default defineComponent({
   },
   methods: {
     onInput: function (value: string[]) {
-      console.log(value);
     },
     onApplyFilterClick: function () {
       // Get language codes
