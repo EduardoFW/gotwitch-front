@@ -26,7 +26,7 @@
     "core-js": "^3.25.5",
     "lodash.clonedeep": "^4.5.0",
     "roboto-fontface": "*",
-    "vue": "^3.0.0",
+    "vue": "^3.2.41",
     "vue-gtag": "^2.0.1",
     "vue-plugin-load-script": "^2.x.x",
     "vuetify": "^3.0.0-beta.0",
