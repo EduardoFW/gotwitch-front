@@ -113,7 +113,7 @@ export default defineComponent({
     searchCategory(val: string) {
       if (val.length > 2) {
         searchCategory(val).then((response: SearchCategoryReturn) => {
-          this.categories = response.data;
+          this.categories = response.categories;
         });
       }
     },

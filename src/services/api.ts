@@ -23,7 +23,7 @@ const convertToSnakeCase = (obj: any) => {
 }
 
 interface streamResponse {
-  data: {
+  stream: {
     id: string
     user_id: string
     user_login: string
@@ -55,7 +55,7 @@ export interface Category {
   box_art_url: string
 }
 export interface SearchCategoryReturn {
-  data: Category[],
+  categories: Category[],
 }
 export const searchCategory = async (category: string): Promise<SearchCategoryReturn> => {
   const response = await axiosClient.get("/search-category", { params: { query: category } })
