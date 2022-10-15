@@ -3,7 +3,9 @@
     <v-dialog
       v-model="filterModal"
     >
-      <FilterDialog @onCloseClick="() => filterModal = false" @onApplyFilterClick="applyFilter"/>
+      <div class="d-flex align-center flex-column">
+        <FilterDialog @onCloseClick="() => filterModal = false" @onApplyFilterClick="applyFilter"/>
+      </div>
     </v-dialog>
     <v-app full-height>
       <AppBar :onGoButtonClick="randomizeChannel" :onFilterButtonClick="() => filterModal = true" />
