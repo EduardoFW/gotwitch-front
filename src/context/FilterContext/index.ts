@@ -28,6 +28,9 @@ const filter = reactive<Filter>({
 
 watch(() => cloneDeep(filter.language), () => {
   localStorage.setItem('language', JSON.stringify(filter.language));
+});
+
+watch(() => cloneDeep(filter.gameId), () => {
   localStorage.setItem('gameId', JSON.stringify(filter.gameId));
 });
 
