@@ -2,7 +2,7 @@
   <v-autocomplete
     v-model="selected"
     v-model:search="localSearch"
-    :items="itemTexts"
+    :items="filteredItemsTexts"
     :label="label"
     :multiple="multiple"
     :chips="chips"
@@ -67,6 +67,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    maxItems: {
+      type: Number,
+      default: Number.MAX_SAFE_INTEGER,
+    },
   },
   setup(props, { emit }) {
     const getNameFromObject = (object: any) => {
@@ -86,6 +90,15 @@ export default defineComponent({
       props.items.map((item: any) => item[props.itemText])
     );
 
+    const filteredItemsTexts = computed(() => {
+      if (props.noFilter) {
+        return itemTexts;
+      }
+      return itemTexts.value.filter(
+        (item) => item.toLowerCase().includes(localSearch.value.toLowerCase())
+      ).slice(0, props.maxItems);
+    });
+
     watch(
       () => cloneDeep(selected.value),
       () => {
@@ -97,7 +110,7 @@ export default defineComponent({
     return {
       selected,
       localSearch,
-      itemTexts,
+      filteredItemsTexts,
     };
   },
   mounted() {

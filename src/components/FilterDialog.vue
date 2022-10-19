@@ -13,9 +13,10 @@
             closable-chips
             label="Languages"
             multiple
-            :items="allLanguages"
+            :items="languages"
             item-text="name"
             item-value="code"
+            :max-items="10"
           />
           <Autocomplete
             v-model="selectedCategories"
@@ -25,9 +26,10 @@
             closable-chips
             label="Categories"
             multiple
-            :items="allCategories"
+            :items="categories"
             item-text="name"
             item-value="id"
+            :max-items="10"
           />
         </v-col>
       </v-row>
@@ -83,15 +85,10 @@ export default defineComponent({
   },
   computed: {
     allCategories: function () {
-      let categoriesLimited = this.categories.slice(0, 10);
-      return this.concatWithoutDuplicates(
-        this.selectedCategories,
-        categoriesLimited
-      );
+      return this.categories;
     },
     allLanguages: function () {
-      let languagesLimited = this.languages.slice(0, 10);
-      return this.selectedLanguages.concat(languagesLimited);
+      return this.languages;
     },
   },
   watch: {
