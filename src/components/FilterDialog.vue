@@ -26,7 +26,7 @@
             closable-chips
             label="Categories"
             multiple
-            :items="categories"
+            :items="allCategories"
             item-text="name"
             item-value="id"
             :max-items="10"
@@ -69,8 +69,16 @@ export default defineComponent({
     const languages = require("../mock/languages.json") as ILanguageType[];
     const selectedLanguages = ref(filter.language);
 
+    const initiallyExistingCategories: Category[] = filter.gameId.map(
+      (gameId: FilterGame) => ({
+        id: gameId.id,
+        name: gameId.name,
+      })
+    );
+
+    const categories = ref<Category[]>(initiallyExistingCategories);
     const selectedCategories = ref<FilterGame[]>(filter.gameId);
-    const categories = ref<Category[]>([]);
+    
     const searchCategoryInput = ref();
 
 
@@ -81,14 +89,15 @@ export default defineComponent({
       selectedLanguages,
       selectedCategories,
       searchCategoryInput,
+      initiallyExistingCategories,
     };
   },
   computed: {
-    allCategories: function () {
-      return this.categories;
-    },
-    allLanguages: function () {
-      return this.languages;
+    allCategories() {
+      return this.concatCategoriesWithoutDuplicateIDs(
+        this.categories,
+        this.initiallyExistingCategories
+      );
     },
   },
   watch: {
@@ -101,10 +110,18 @@ export default defineComponent({
     },
   },
   methods: {
-    concatWithoutDuplicates<T>(array1: T[], array2: T[]): T[] {
-      return array1.concat(
-        array2.filter((item) => array1.indexOf(item) < 0)
+    concatCategoriesWithoutDuplicateIDs: function (
+      categories: Category[],
+      newCategories: Category[]
+    ) {
+      const newCategoriesWithoutDuplicates = newCategories.filter(
+        (newCategory) => {
+          return !categories.some(
+            (category) => category.id === newCategory.id
+          );
+        }
       );
+      return categories.concat(newCategoriesWithoutDuplicates);
     },
     onApplyFilterClick: function () {
       // Get language codes
