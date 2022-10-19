@@ -69,8 +69,16 @@ export default defineComponent({
     const languages = require("../mock/languages.json") as ILanguageType[];
     const selectedLanguages = ref(filter.language);
 
+    const initiallyExistingCategories: Category[] = filter.gameId.map(
+      (gameId: FilterGame) => ({
+        id: gameId.id,
+        name: gameId.name,
+      })
+    );
+
+    const categories = ref<Category[]>(initiallyExistingCategories);
     const selectedCategories = ref<FilterGame[]>(filter.gameId);
-    const categories = ref<Category[]>([]);
+    
     const searchCategoryInput = ref();
 
 
@@ -83,14 +91,6 @@ export default defineComponent({
       searchCategoryInput,
     };
   },
-  computed: {
-    allCategories: function () {
-      return this.categories;
-    },
-    allLanguages: function () {
-      return this.languages;
-    },
-  },
   watch: {
     searchCategoryInput(searchInput: string) {
       if (searchInput.length > 2) {
@@ -101,11 +101,6 @@ export default defineComponent({
     },
   },
   methods: {
-    concatWithoutDuplicates<T>(array1: T[], array2: T[]): T[] {
-      return array1.concat(
-        array2.filter((item) => array1.indexOf(item) < 0)
-      );
-    },
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.selectedLanguages;
