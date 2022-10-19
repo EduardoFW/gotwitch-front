@@ -26,7 +26,7 @@
             closable-chips
             label="Categories"
             multiple
-            :items="categories"
+            :items="allCategories"
             item-text="name"
             item-value="id"
             :max-items="10"
@@ -89,7 +89,16 @@ export default defineComponent({
       selectedLanguages,
       selectedCategories,
       searchCategoryInput,
+      initiallyExistingCategories,
     };
+  },
+  computed: {
+    allCategories() {
+      return this.concatCategoriesWithoutDuplicateIDs(
+        this.categories,
+        this.initiallyExistingCategories
+      );
+    },
   },
   watch: {
     searchCategoryInput(searchInput: string) {
@@ -101,6 +110,19 @@ export default defineComponent({
     },
   },
   methods: {
+    concatCategoriesWithoutDuplicateIDs: function (
+      categories: Category[],
+      newCategories: Category[]
+    ) {
+      const newCategoriesWithoutDuplicates = newCategories.filter(
+        (newCategory) => {
+          return !categories.some(
+            (category) => category.id === newCategory.id
+          );
+        }
+      );
+      return categories.concat(newCategoriesWithoutDuplicates);
+    },
     onApplyFilterClick: function () {
       // Get language codes
       const languageCodes = this.selectedLanguages;
