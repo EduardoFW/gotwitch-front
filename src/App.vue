@@ -29,6 +29,7 @@ import Loading from "./components/Loading.vue";
 import Footer from "./components/Footer.vue";
 import FilterDialog from "./components/FilterDialog.vue";
 import FilterContext, { FilterContextKey } from "./context/FilterContext";
+import { useToast, POSITION } from "vue-toastification";
 
 export default defineComponent({
   name: "App",
@@ -43,8 +44,11 @@ export default defineComponent({
   setup () {
     provide(FilterContextKey, FilterContext);
 
+    const toast = useToast();
+
     return {
       ...FilterContext,
+      toast
     }
   },
   created() {
@@ -70,8 +74,8 @@ export default defineComponent({
       };
     },
     applyFilter(params: getRandomStreamParams) {
-      this.randomizeChannel();
       this.filterModal = false;
+      this.randomizeChannel();
     },
     randomizeChannel() {
       this.loading = true;
@@ -79,7 +83,14 @@ export default defineComponent({
         .then((response) => {
           this.channel = response.stream.user_login;
         })
-        .catch((e) => console.error(e))
+        .catch((e) => {
+          if (e.response.status === 404) {
+            this.toast.error("No streams found with the current filters", {
+              position: POSITION.TOP_LEFT,
+            });
+            this.filterModal = true;
+          }
+        })
         .finally(() => (this.loading = false));
     },
   },
