@@ -6,46 +6,28 @@
     <v-card-text>
       <v-row>
         <v-col>
-          <Autocomplete
-            v-model="selectedLanguages"
-            outlined
-            chips
-            closable-chips
-            label="Languages"
-            multiple
-            :items="languages"
-            item-text="name"
-            item-value="code"
-            :max-items="10"
-          />
-          <Autocomplete
-            v-model="selectedCategories"
-            v-model:search="searchCategoryInput"
-            outlined
-            chips
-            closable-chips
-            label="Categories"
-            multiple
-            :items="allCategories"
-            item-text="name"
-            item-value="id"
-            :max-items="10"
-          />
+          <Autocomplete v-model="selectedLanguages" outlined chips closable-chips label="Languages" multiple
+            :items="languages" item-text="name" item-value="code" :max-items="10" />
+          <Autocomplete v-model="selectedCategories" v-model:search="searchCategoryInput" outlined chips closable-chips
+            label="Categories" multiple :items="allCategories" item-text="name" item-value="id" :max-items="10" />
         </v-col>
       </v-row>
     </v-card-text>
     <v-card-actions>
       <v-btn color="error" @click="$emit('onCloseClick')">Cancel</v-btn>
       <v-spacer />
-      <v-btn color="primary" @click="onApplyFilterClick">Apply</v-btn>
+      <v-btn color="primary" @click="onApplyFilterClick" :loading="possibleStreamsCountLoading"
+        :disabled="possibleStreamsCount == 0">
+        Apply ({{ possibleStreamsCount }})
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts">
-import { Category, searchCategory, SearchCategoryReturn } from "@/services/api";
-import { defineComponent, inject, ref } from "vue";
-import { FilterContextKey, FilterGame } from "../context/FilterContext";
+import { Category, searchCategory, SearchCategoryReturn, getPossibleStreamsCount } from "@/services/api";
+import { defineComponent, inject, Ref, ref, watch } from "vue";
+import { FilterContextKey, FilterGame, FilterLanguage } from "../context/FilterContext";
 import Autocomplete from "./Autocomplete.vue";
 
 interface ILanguageType {
@@ -64,10 +46,10 @@ export default defineComponent({
   },
   emits: ["onCloseClick", "onApplyFilterClick"],
   setup() {
-    const { filter } = inject(FilterContextKey);
+    const { filter, getFilterParams } = inject(FilterContextKey);
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const languages = require("../mock/languages.json") as ILanguageType[];
-    const selectedLanguages = ref(filter.language);
+    const selectedLanguages: Ref<FilterLanguage[]> = ref(filter.language);
 
     const initiallyExistingCategories: Category[] = filter.gameId.map(
       (gameId: FilterGame) => ({
@@ -78,9 +60,33 @@ export default defineComponent({
 
     const categories = ref<Category[]>(initiallyExistingCategories);
     const selectedCategories = ref<FilterGame[]>(filter.gameId);
-    
+
     const searchCategoryInput = ref();
 
+    const possibleStreamsCount = ref(0);
+    const possibleStreamsCountLoading = ref(false);
+
+    const updatePossibleStreamsCount = () => {
+      possibleStreamsCountLoading.value = true;
+      getPossibleStreamsCount(
+        getFilterParams({
+          language: selectedLanguages.value,
+          gameId: selectedCategories.value,
+        })
+      ).then((count) => {
+        possibleStreamsCount.value = count;
+      }).finally(() => {
+        possibleStreamsCountLoading.value = false;
+      });
+    };
+
+    updatePossibleStreamsCount();
+    watch(
+      () => selectedLanguages.value.length + selectedCategories.value.length,
+      () => {
+        updatePossibleStreamsCount();
+      }
+    );
 
     return {
       filter,
@@ -90,6 +96,8 @@ export default defineComponent({
       selectedCategories,
       searchCategoryInput,
       initiallyExistingCategories,
+      possibleStreamsCount,
+      possibleStreamsCountLoading,
     };
   },
   computed: {
