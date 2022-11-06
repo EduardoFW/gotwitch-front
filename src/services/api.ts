@@ -58,6 +58,11 @@ export const getRandomStream = async (params?: getRandomStreamParams): Promise<s
   return response.data
 }
 
+export const getPossibleStreamsCount = async (params?: getRandomStreamParams): Promise<number> => {
+  const response = await axiosClient.get("/stream-count", { params: convertToSnakeCase(params) })
+  return response.data.count
+}
+
 export interface Category {
   id: string
   name: string
