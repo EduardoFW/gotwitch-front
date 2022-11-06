@@ -43,7 +43,25 @@ const filterCount = computed(() => {
   }).length;
 });
 
+const getFilterParams = (filter: Filter) => {
+  const {
+    language,
+    gameId,
+  } = filter;
+
+  return {
+    language: language.map((l) => l.code),
+    gameId: gameId.map((c) => c.id),
+  }
+};
+
+const filterParams = computed(() => {
+  return getFilterParams(filter);
+});
+
 export default {
   filter,
-  filterCount
+  filterCount,
+  filterParams,
+  getFilterParams
 };

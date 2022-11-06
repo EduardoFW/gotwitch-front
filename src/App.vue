@@ -79,7 +79,7 @@ export default defineComponent({
     },
     randomizeChannel() {
       this.loading = true;
-      getRandomStream(this.getFiltersParams())
+      getRandomStream(this.filterParams)
         .then((response) => {
           this.channel = response.stream.user_login;
         })
